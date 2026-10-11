@@ -1,124 +1,88 @@
-
+HTLM
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#101827">
-  <title>ROVINSKY — Recherche d'applications</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0b1120;
-      color: #f8fafc;
-    }
-    header {
-      padding: 25px 20px;
-      background: #101827;
-      border-bottom: 1px solid #293449;
-    }
-    .logo { font-size: 30px; font-weight: 800; letter-spacing: 3px; }
-    .logo span { color: #42d6c5; }
-    header p { color: #a8b4c8; margin-bottom: 0; }
-    main { max-width: 750px; margin: auto; padding: 22px 16px; }
-    .intro { font-size: 24px; font-weight: bold; line-height: 1.3; }
-    .muted { color: #a8b4c8; line-height: 1.5; }
-    input, select, button {
-      width: 100%; padding: 14px; border-radius: 10px;
-      font-size: 16px; margin: 7px 0;
-    }
-    input, select {
-      color: white; background: #172236;
-      border: 1px solid #35435b;
-    }
-    button {
-      border: 0; background: #42d6c5;
-      color: #07151b; font-weight: bold; cursor: pointer;
-    }
-    .card {
-      background: #131e30; border: 1px solid #29374c;
-      border-radius: 14px; padding: 18px; margin-top: 20px;
-    }
-    .tag {
-      display: inline-block; background: #203b48;
-      color: #71eee0; border-radius: 20px;
-      padding: 6px 10px; font-size: 13px;
-    }
-    a { color: #71eee0; }
-    .hidden { display: none; }
-    footer { text-align: center; padding: 25px; color: #8290a6; font-size: 13px; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101827">
+<title>ROVINSKY — Recherche d'applications</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#0b1120;color:#f8fafc}
+header{padding:25px 20px;background:#101827;border-bottom:1px solid #293449}
+.logo{font-size:30px;font-weight:800;letter-spacing:3px}
+.logo span{color:#42d6c5}
+header p{color:#a8b4c8;margin-bottom:0}
+main{max-width:750px;margin:auto;padding:30px 16px}
+h2{font-size:25px}
+p{line-height:1.6;color:#a8b4c8}
+input,select,button{width:100%;padding:15px;margin:7px 0;border-radius:12px;font-size:16px}
+input,select{background:#172338;color:white;border:1px solid #344158}
+button{background:#42d6c5;color:#07111e;font-weight:bold;border:0;cursor:pointer}
+.card{background:#141f32;border:1px solid #293449;border-radius:17px;padding:20px;margin-top:20px}
+.tag{display:inline-block;background:#203c4b;color:#83f0df;padding:8px 12px;border-radius:30px;font-size:13px}
+a{color:#69e6d6}
+small{color:#a8b4c8}
+</style>
 </head>
 <body>
-  <header>
-    <div class="logo">RO<span>VIN</span>SKY</div>
-    <p>Retrouve la bonne application, sans confusion.</p>
-  </header>
+<header>
+<div class="logo">ROV<span>IN</span>SKY</div>
+<p>Retrouve la bonne application, sans confusion.</p>
+</header>
+<main>
+<h2>Quelle application recherches-tu ?</h2>
+<p>Recherche une application, vérifie son éditeur et consulte son historique de versions lorsque des sources fiables sont disponibles.</p>
 
-  <main>
-    <p class="intro">Quelle application recherches-tu ?</p>
-    <p class="muted">Recherche une application et consulte ses informations et son historique de versions lorsqu'ils sont disponibles.</p>
+<form id="searchForm">
+<input id="appName" type="search" placeholder="Ex. : WhatsApp, Telegram..." required>
+<select id="platform">
+<option value="android">Android</option>
+<option value="iphone">iPhone (iOS)</option>
+</select>
+<button type="submit">Rechercher l'application</button>
+</form>
 
-    <form id="searchForm">
-      <input id="appName" type="search" placeholder="Ex. : WhatsApp, Telegram..." required>
-      <select id="platform">
-        <option value="android">Android</option>
-        <option value="iphone">iPhone (iOS)</option>
-      </select>
-      <button type="submit">Rechercher l'application</button>
-    </form>
+<div id="results" class="card">
+<span class="tag">La mission de ROVINSKY</span>
+<h2>Une recherche précise</h2>
+<p>ROVINSKY vise à retrouver la bonne application, sans mélanger les résultats de plusieurs applications.</p>
+<p>Les versions anciennes et leurs dates devront être confirmées par des sources fiables avant d'être affichées.</p>
+</div>
 
-    <section id="result" class="card hidden" aria-live="polite"></section>
-
-    <section class="card">
-      <span class="tag">La mission de ROVINSKY</span>
-      <h2>Une recherche précise</h2>
-      <p class="muted">ROVINSKY est conçu pour aider à retrouver la bonne application, identifier son éditeur et consulter les versions documentées sans mélanger les résultats.</p>
-      <p class="muted">Les anciennes versions et leurs dates devront être vérifiées auprès de sources fiables avant d'être affichées.</p>
-    </section>
-  </main>
-
-  <footer>ROVINSKY © 2026 — Prototype en construction</footer>
-
-  <script>
-    const form = document.getElementById("searchForm");
-    const result = document.getElementById("result");
-
-    form.addEventListener("submit", function(event) {
-      event.preventDefault();
-      const name = document.getElementById("appName").value.trim();
-      const platform = document.getElementById("platform").value;
-
-      if (!name) return;
-
-      const storeUrl = platform === "android"
-        ? "https://play.google.com/store/search?q=" + encodeURIComponent(name) + "&c=apps"
-        : "https://www.google.com/search?q=" + encodeURIComponent(name) + "+site%3Aapps.apple.com";
-
-      result.classList.remove("hidden");
-      result.replaceChildren();
-
-      const badge = document.createElement("span");
-      badge.className = "tag";
-      badge.textContent = platform === "android" ? "Android" : "iPhone (iOS)";
-
-      const title = document.createElement("h2");
-      title.textContent = name;
-
-      const description = document.createElement("p");
-      description.className = "muted";
-      description.textContent = "Recherche prête. Consulte le magasin officiel pour vérifier le nom exact, l'éditeur et la disponibilité.";
-
-      const link = document.createElement("a");
-      link.href = storeUrl;
-      link.target = "_blank";
-      link.rel = "noopener noreferrer";
-      link.textContent = "Rechercher dans la source officielle";
-
-      result.append(badge, title, description, link);
-    });
-  </script>
+<div class="card">
+<h3>Comment utiliser ROVINSKY</h3>
+<p>1. Saisis le nom exact de l'application.</p>
+<p>2. Choisis Android ou iPhone.</p>
+<p>3. Consulte les résultats de la source officielle.</p>
+</div>
+</main>
+<script>
+document.getElementById("searchForm").addEventListener("submit",function(event){
+event.preventDefault();
+const name=document.getElementById("appName").value.trim();
+const platform=document.getElementById("platform").value;
+const result=document.getElementById("results");
+if(!name)return;
+const query=encodeURIComponent(name);
+const url=platform==="android"
+?"https://play.google.com/store/search?q="+query+"&c=apps"
+:"https://www.google.com/search?q="+query+"+site%3Aapps.apple.com";
+result.innerHTML="";
+const tag=document.createElement("span");
+tag.className="tag";
+tag.textContent=platform==="android"?"Android":"iPhone (iOS)";
+const title=document.createElement("h2");
+title.textContent=name;
+const description=document.createElement("p");
+description.textContent="Recherche préparée. Vérifie le nom exact et l'éditeur dans la source officielle avant de télécharger.";
+const link=document.createElement("a");
+link.href=url;
+link.target="_blank";
+link.rel="noopener noreferrer";
+link.textContent="Rechercher dans la source officielle";
+result.append(tag,title,description,link);
+});
+</script>
 </body>
 </html>
